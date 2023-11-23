@@ -14,6 +14,21 @@ use Inertia\Response;
 class ProfileController extends Controller
 {
     /**
+     * Отправляет авторизованного пользователя на страницу хранилища, иначе на страницу логин
+     */
+    public function index(): Response|RedirectResponse
+    {
+        if (Auth::user()) {
+            return Inertia::render('Storage/Index', [
+                'id' => Auth::user()->id,
+                'email' => Auth::user()->email,
+            ]);
+        }
+
+        return redirect()->route('login');
+    }
+
+    /**
      * Display the user's profile form.
      */
     public function edit(Request $request): Response
